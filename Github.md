@@ -16,3 +16,8 @@ git remote -v     //显示需要读写远程仓库使用的Git保存的简写与
 ```
 git	push [remote-name] [branch-name]
 ```
+
+## 拉取远程服务器origin的master分支并且整合代码
+```
+git pull origin master //git pull相当于 git fetch 跟着一个 git merge FETCH_HEAD  ;如果发生了冲突，可以使用git reset --merge进行回退。
+```
