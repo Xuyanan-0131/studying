@@ -33,4 +33,5 @@ git 有一个名为HEAD的特殊指针，指向当前所在的本地分支
 ## 分支切换
 ```
 git checkout [branch name] //切换至已存在的分支
+git log --oneline --decorate --graph --all //输出提交历史、各个分支的指向以及项目的分支分叉情况
 ```
