@@ -9,7 +9,7 @@ git	commit	-m “ 第一次提交”
 ```
 ## 添加远程仓库
 ```	
-git	remote add	<shortname>	<url> //添加远程仓库，并指定一个轻松引用的简写
+git remote add	<shortname>	<url> //添加远程仓库，并指定一个轻松引用的简写
 git remote -v     //显示需要读写远程仓库使用的Git保存的简写与其对应的URL
 ```
 ## 推送到远程仓库
