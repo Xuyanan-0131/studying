@@ -34,4 +34,12 @@ git 有一个名为HEAD的特殊指针，指向当前所在的本地分支
 ```
 git checkout [branch name] //切换至已存在的分支
 git log --oneline --decorate --graph --all //输出提交历史、各个分支的指向以及项目的分支分叉情况
+git checkout -b [branch name] //新建一个分支并同时切换到那个分支上,是git branch 和git checkout的简写
+```
+
+## 分支合并
+```
+git checkout master         //切换至master分支
+git merge [branch name]     //将branchname的分支与master合并，其实是将master的指针移动到了branchname的指针
+git branch -d [branch name] //删除分支
 ```
