@@ -7,7 +7,7 @@ git diff          //查看暂存前后的变化
 ```
 git add    //跟踪新文件
 git	commit	-m “message”
-git commit -a -m "message"  //跳过git add步骤，自动把所有已经跟踪过的文件暂存起来一并提交
+git commit -am "message"  //跳过git add步骤，自动把所有已经跟踪过的文件暂存起来一并提交
 ```
 ## 添加远程仓库
 ```	
