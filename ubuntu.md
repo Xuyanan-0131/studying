@@ -120,4 +120,6 @@ export CMAKE_PREFIX_PATH="~/Qt5.6.0/5.6/Src/qtbase/"
 如果还是不行，则修改为
 export CMAKE_PREFIX_PATH="～/Qt5.6.0/5.6/gcc_64/lib/cmake/"
 
-___以上是我遇到的所有问题，若有其他问题，百度大多数都能解决___
+___以上是我遇到的所有问题，若有其他问题，百度大多数都能解决___   
+___参考： 
+https://my.oschina.net/lieefu/blog/505363?fromerr=NNm21wBS____
