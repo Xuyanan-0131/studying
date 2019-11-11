@@ -42,4 +42,7 @@ git checkout -b [branch name] //新建一个分支并同时切换到那个分支
 git checkout master         //切换至master分支
 git merge [branch name]     //将branchname的分支与master合并，其实是将master的指针移动到了branchname的指针
 git branch -d [branch name] //删除分支
+
+git merge --abort           //若合并失败，尝试恢复到你运行合并前的状态，中断合并
+git merge -Xignore-space-change 【branchname] //忽略所有空白修改 
 ```
