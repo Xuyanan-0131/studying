@@ -123,3 +123,111 @@ export CMAKE_PREFIX_PATH="～/Qt5.6.0/5.6/gcc_64/lib/cmake/"
 ___以上是我遇到的所有问题，若有其他问题，百度大多数都能解决___   
 ___参考： 
 https://my.oschina.net/lieefu/blog/505363?fromerr=NNm21wBS____
+
+# 5.关于qt上位机的deb文件打包
+
+deb打包前文件结构如下
+```
+-package
+    |-DEBIAN
+        |-control
+    |-usr
+        |-lib
+            |-各个依赖库
+        |-src
+            |-可执行文件
+```
+## 5.1 在qt下构建release版本的执行文件，执行打包的sh指令，将执行文件及其依赖库打包
+```
+#!/bin/bash
+
+LibDir=$PWD"/lib"
+Target="sensor"
+
+lib_array=($(ldd $Target | grep -o "/.*" | grep -o "/.*/[^[:space:]]*"))
+
+$(mkdir $LibDir)
+
+for Variable in ${lib_array[@]}
+do
+    cp "$Variable" $LibDir
+done
+```
+首先需要明白自己需要哪些依赖库，可以使用```ldd+执行文件名```查看运行程序所需的依赖库，但是不一定全面，有些库还需要自己手动添加，qt的依赖库都在Qt5.8.0/5.8/gcc_64/lib下，这些库文件一般都是要考到usr/lib下。
+同时，还需要拷贝Qt5安装目录中plugins（Qt5.8.0/5.8/gcc_64/plugins）中的一些目录,比如platforms目录（平台所需）、xcbglintegrations目录（xcb所需），使它与Qt运行文件在同级目录。
+## 5.2 开始打包deb包
+```
+mkdir package
+cd package
+```
+### 5.2.1 因为安装软件包的时候默认是将文件释放到根目录下，所以需要设定好它安装的路径，同时还需要建立一个DEBIAN目录。
+```
+mkdir -p usr/src
+mkdir -p usr/lib
+mkdir DEBIAN
+```
+### 5.2.2 把需要打包的文件及其库文件拷贝到相应的目录
+```
+cp home/youname/sensor usr/src
+cp home/youname/lib/* usr/lib
+```
+### 5.2.3 重点：在 DEBIAN目录下创建一个control文件，并加入以下内容，内容可自定义：
+```
+gedit DEBIAN/control
+Package: sensor
+Version: 1.0.1
+Section: utils
+Priority: optional
+Architecture: i386
+Depends:
+Installed-Size: 512
+Maintainer: xu@163.com
+Description: sensor package
+```
+### 5.2.4 使用dpkg 命令构建deb包
+```
+sudo chmod 755 * -R
+dpkg -b . /home/youname/sensor_v1.0.1.deb
+```
+打包完成
+
+## 5.3 安装与卸载
+安装
+```
+dpkg -i sensor_v1.0.1.deb
+```
+卸载
+```
+dpkg -r sensor
+```
+
+## 5.4 出现的问题
+
+### 5.4.1 出现qt_5 not found 
+解决办法：
+```
+export LD_LIBRARY_PATH=LD_LIBRARY_PATH:/usr/lib  //你的依赖库安装路径
+```
+也可以在etc/ld.so.conf.d/ 下创建**.config，输入依赖库路径
+例如：
+```
+/usr/lib
+```
+### 5.4.2 xcb not found
+```
+cp -a libQt5DBus.so* libQt5XcbQpa.so.5* 目标路径/lib
+```
+## 5.5 可执行文件快捷桌面方式
+所有的桌面快捷方式都存在与usr/share/applications
+在此目录下创建.desktop
+```
+[Desktop Entry]
+Name = Boschda Sensor Tool
+Exec = /usr/src/sensor/sensor %U
+Icon = /usr/src/sensor/sensor/bin/seahores.png
+Path = /usr/src/sensor/bin
+Terminal = false
+Type = Application
+Categories = Network;
+```
+最后sudo chmod +x **.desktop
