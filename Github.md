@@ -46,3 +46,14 @@ git branch -d [branch name] //删除分支
 git merge --abort           //若合并失败，尝试恢复到你运行合并前的状态，中断合并
 git merge -Xignore-space-change 【branchname] //忽略所有空白修改 
 ```
+
+## 删除提交历史
+```
+尝试 运行 git checkout --orphan latest_branch
+添加所有文件git add -A
+提交更改git commit -am "commit message"
+删除分支git branch -D master
+将当前分支重命名git branch -m master
+最后，强制更新存储库。git push -f origin master
+```
+参考：https://blog.csdn.net/love_dl_forever/article/details/79380921
