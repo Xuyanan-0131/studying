@@ -128,14 +128,11 @@ https://my.oschina.net/lieefu/blog/505363?fromerr=NNm21wBS____
 
 deb打包前文件结构如下
 ```
--package
-    |-DEBIAN
-        |-control
-    |-usr
-        |-lib
-            |-各个依赖库
-        |-src
-            |-可执行文件
+|-package
+|    |-DEBIAN
+|      |——control
+|    |-usr
+|      |——可执行文件
 ```
 ## 5.1 在qt下构建release版本的执行文件，执行打包的sh指令，将执行文件及其依赖库打包
 ```
@@ -154,7 +151,25 @@ do
 done
 ```
 首先需要明白自己需要哪些依赖库，可以使用```ldd+执行文件名```查看运行程序所需的依赖库，但是不一定全面，有些库还需要自己手动添加，qt的依赖库都在Qt5.8.0/5.8/gcc_64/lib下，这些库文件一般都是要考到usr/lib下。
-同时，还需要拷贝Qt5安装目录中plugins（Qt5.8.0/5.8/gcc_64/plugins）中的一些目录,比如platforms目录（平台所需）、xcbglintegrations目录（xcb所需），使它与Qt运行文件在同级目录。
+同时，还需要拷贝Qt5安装目录中plugins（Qt5.8.0/5.8/gcc_64/plugins）中的一些目录,比如platforms目录（平台所需）、xcbglintegrations目录（xcb所需），使它与Qt运行文件在同级目录。  
+### ------------20191118更新-----------------  
+再创建一个与可执行文件同名的shell文件，内容如下：
+```
+#!/bin/sh  
+appname=`basename $0 | sed s,\.sh$,,`  
+dirname=`dirname $0`  
+tmp="${dirname#?}"  
+if [ "${dirname%$tmp}" != "/" ]; then  
+dirname=$PWD/$dirname  
+fi 
+export LD_LIBRARY_PATH=LD_LIBRARY_PATH:/usr/lib/sensor
+$dirname/$appname "$@" 
+```
+并赋予权限：
+```
+chmod +x sensor.sh
+```
+之后运行该程序时，就应该执行./sensor.sh
 ## 5.2 开始打包deb包
 ```
 mkdir package
@@ -183,6 +198,20 @@ Depends:
 Installed-Size: 512
 Maintainer: xu@163.com
 Description: sensor package
+```
+### ------------------------20191118更新---------------------------
+```
+preinst
+在Deb包文件解包之前，将会运行该脚本。许多“preinst”脚本的任务是停止作用于待升级软件包的服务，直到软件包安装或升级完成。
+
+postinst
+该脚本的主要任务是完成安装包时的配置工作。许多“postinst”脚本负责执行有关命令为新安装或升级的软件重启服务。
+
+prerm
+该脚本负责停止与软件包相关联的daemon服务。它在删除软件包关联文件之前执行。
+
+postrm
+该脚本负责修改软件包链接或文件关联，或删除由它创建的文件。
 ```
 ### 5.2.4 使用dpkg 命令构建deb包
 ```
@@ -213,6 +242,7 @@ export LD_LIBRARY_PATH=LD_LIBRARY_PATH:/usr/lib  //你的依赖库安装路径
 ```
 /usr/lib
 ```
+再执行sudo ldconfig 
 ### 5.4.2 xcb not found
 ```
 cp -a libQt5DBus.so* libQt5XcbQpa.so.5* 目标路径/lib
@@ -223,8 +253,8 @@ cp -a libQt5DBus.so* libQt5XcbQpa.so.5* 目标路径/lib
 ```
 [Desktop Entry]
 Name = Boschda Sensor Tool
-Exec = /usr/src/sensor/sensor %U
-Icon = /usr/src/sensor/sensor/bin/seahores.png
+Exec = /usr/src/sensor/sensor.sh %U            //可执行文件路径
+Icon = /usr/src/sensor/sensor/bin/seahores.png //桌面文件ico
 Path = /usr/src/sensor/bin
 Terminal = false
 Type = Application
