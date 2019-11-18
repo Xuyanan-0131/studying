@@ -16,7 +16,7 @@ git remote -v     //显示需要读写远程仓库使用的Git保存的简写与
 ```
 ## 推送到远程仓库
 ```
-git	push [remote-name] [branch-name]
+git push [remote-name] [branch-name]
 ```
 
 ## 拉取远程服务器origin的master分支并且整合代码
