@@ -260,4 +260,46 @@ Terminal = false
 Type = Application
 Categories = Network;
 ```
-最后sudo chmod +x **.desktop
+最后sudo chmod +x **.desktopubuntu删除文件夹
+
+# 删除文件夹
+```
+rm -rf [dir]
+```
+
+# 创建文件夹
+```
+mkdir [dir]
+```
+
+# 查看隐藏文件
+```
+la -ah
+```
+
+# 双屏幕
+```
+xrandr
+xrandr --output eDP-1 --auto        //启用edp1
+xrandr --output VGA-1 --right-of eDP-1 --auto
+xrandr --output VGA-1 --auto --output eDP-1 --off
+```
+
+# 查看内核列表
+
+```
+sudo dpkg --get-selections |grep linux-image
+```
+
+# 当更新驱动后进不去系统
+```
+advanced options for ubuntu
+选择带有recovery mode ，按e
+倒数第四行删除：ro recover nomodeset
+添加quiet splash rw init=/bin/bash
+F10启动
+进入root
+输入sudo apt-get remove --purge nvidia*
+重启系统
+进入系统
+```
