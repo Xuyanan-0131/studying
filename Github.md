@@ -88,3 +88,10 @@ git checkout -b dev origin/dev      //创建远程origin的dev分支到本地
 git gc --prune=now                  //
 git pull origin dev2:dev2           //从远端拉取本地不存在的分支
 ```
+
+```
+git rebase []  //与cherr-pick <commite>本质相同
+git push origin --delete [远端分支]
+git branch  -a //获取远端分支
+git push origin --delete dev  //删除远端分支
+```

@@ -289,6 +289,7 @@ xrandr --output VGA-1 --auto --output eDP-1 --off
 
 ```
 sudo dpkg --get-selections |grep linux-image
+uname -a
 ```
 
 # 当更新驱动后进不去系统
@@ -303,3 +304,15 @@ F10启动
 重启系统
 进入系统
 ```
+
+
+# bind error[98] CLOSE_WAITE
+解决办法：
+```
+netstat -anp |grep 端口号
+lsof -i:端口号
+kill PID
+```
+
+# boot盘满载
+解决办法
