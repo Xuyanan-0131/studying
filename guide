@@ -1,0 +1,275 @@
+
+1. Install cuda
+
+
+
+downlowd local deb package from cuda official website.
+Follow the instructions.
+
+
+
+E:Could not get lock /var/lib/apt/lists/lock - open (11: Resource temporarily unavailable)
+2011年04月24日 11:51:00 楚小狂 阅读数：57569 标签： ubuntu kill list 终端 工作
+出现这个问题的原因可能是有另外一个程序正在运行，导致资源被锁不可用。而导致资源被锁的原因，可能是上次安装时没正常完成，而导致出现此状况。
+
+解决方法：输入以下命令
+
+sudo rm /var/cache/apt/archives/lock
+
+sudo rm /var/lib/dpkg/lock
+
+之后再安装想装的包，即可解决
+
+
+
+2. Install git
+
+
+
+> sudo apt-get install git
+
+
+
+
+3. Install boost
+
+
+
+https://github.com/boostorg/boost/wiki/Getting-Started
+
+
+
+> sudo apt-get install build-essential g++ python-dev autotools-dev libicu-dev build-essential libbz2-dev 
+
+
+>git submodule update --init  
+>git tag
+> git checkout [latest_stable_release]
+
+> ./bootstrap.sh
+> ./b2
+> sudo ./b2 install
+
+
+
+4. install cmake
+
+compile from source
+
+* Download latest release from https://cmake.org/download/
+
+* follow the instructions: in README.
+
+
+> ./bootstrap && make  && sudo make install
+
+
+> sudo apt-get install cmake-curses-gui 
+
+
+
+5. install eigen
+
+
+
+> git clone https://github.com/eigenteam/eigen-git-mirror.git eigen
+
+> git checkout [latest_stable_release]
+
+> mkdir build
+
+> cd build
+
+> cmake ..
+
+> sudo make install
+
+
+
+
+6. install VTK
+
+
+https://www.vtk.org/Wiki/VTK/Configure_and_Build#On_Unix-like_operating_systems 
+
+
+
+> git clone https://gitlab.kitware.com/vtk/vtk
+
+> git tag
+> git checkout [latest_stable_release]
+
+> mkdir build && cd build
+
+> cmake -DVTK_QT_VERSION:STRING=5 -DQT_QMAKE_EXECUTABLE:PATH=/home/Qt5/5.11.2/gcc_64/bin/qmake -DVTK_Group_Qt:BOOL=ON -DBUILD_TESTING:BOOL=OFF -DCMAKE_BUILD_TYPE:STRING=Release -DCMAKE_PREFIX_PATH:PATH=/home/Qt5/5.11.2/gcc_64/lib/cmake  -DBUILD_SHARED_LIBS:BOOL=ON ..
+
+> make -j5
+
+> sudo make install
+
+
+
+7. install pcl 
+(HEAD)
+
+* install dependencies
+
+FLANN version >= 1.6.8 
+
+> sudo apt-get install libflann-dev
+
+
+QHULL version >= 2011.1
+
+> sudo apt-get install libqhull-dev
+
+libusb
+
+> sudo apt-get install libusb-1.0-0-dev 
+
+OpenNI version >= 1.1.0.25
+
+
+> sudo apt-get install libopenni-dev openni-utils
+
+OpenNI2
+sudo apt-get install libopenni2-dev openni2-utils
+
+* install pcl
+
+> cmake --DBUILD_TESTING:BOOL=OFF -DCMAKE_BUILD_TYPE:STRING=Release -DCMAKE_PREFIX_PATH:PATH=/home/Qt/5.11.2/gcc_64/lib/cmake  -DBUILD_SHARED_LIBS:BOOL=ON ..
+
+(use 
+> ccmake .. 
+to tune some options)
+
+
+从Qt官网上下载Qt5.8的安装包。
+下载网址：http://download.qt.io/archive/qt/
+安装
+cd到qt-opensource-linux-x64-5.8.0.run所在的目录下，在命令端口中输入安装命令：sudo ./qt-opensource-linux-x64-5.8.0.run
+
+sudo chmod +x qt-opensource-linux-x64-5.8.0.run
+
+
+arm-x64  version 
+
+安装
+
+1、安装命令
+
+// sudo apt-get install qt5-default qtcreator -y # 安装Qt Creator //
+
+配置
+
+1、TX2上新安装的Qt Creator并不能直接使用，还需要配置编译器。
+
+2、下面就开始进行gcc的配置，首先定位到Tools->Options->Build & Run->Compilers ，然后点击Add并选择GCC，在compiler path一栏，输入gcc地址：/usr/bin/gcc 。接下来修改ABI选项，将其依次修改为custom – arm – linux – generic – elf – 64 bit，完成后点击apply生效。
+
+
+
+error while loading shared libraries: libopencv_core.so.2.4: cannot open shared object file: No such
+
+在ubuntu下编译opencv程序后，执行报下面到错误：
+error while loading shared libraries: libopencv_core.so.2.4: cannot open shared object file: No such file or directory
+解决方法：找到libopencv_开头到库的目录，在/usr/local/lib下面，在/etc/ld.so.conf.d/下面新建一个opencv.conf，里面写入/usr/local/lib，最后执行下sudo ldconfig -v即可。
+
+
+
+
+* FFmpeg
+
+> git clone https://github.com/FFmpeg/FFmpeg.git
+
+> git checkout [latest-release]
+
+> sudo apt-get install yasm
+
+> ./configure --enable-shared --disable-static      need to wait several sec
+
+> make 
+
+> sudo make install
+
+
+8. INstall opencv 
+opencv-contrib (latest release)
+* install dependencies
+
+> sudo apt-get install libgtk2.0-dev pkg-config  libavcodec-dev libavformat-dev libswscale-dev python-dev python-numpy libtbb2 libtbb-dev libjpeg-dev libpng-dev libtiff-dev libjasper-dev libdc1394-22-dev
+
+* Build opencv with contrib
+
+
+> cd opencv_contrib
+
+> git checkout [latest-release]
+
+> cd ../opencv
+
+> git checkout [latest-release]
+
+> mkdir build && cd build
+
+> cmake -DOPENCV_EXTRA_MODULES_PATH=../../opencv_contrib/modules  
+-DCMAKE_PREFIX_PATH:PATH=/home/ur-boschda/Qt/5.11.1/gcc_64/lib/cmake ..
+
+>make -j4
+>sudo make install
+
+
+
+1.fatal error: boostdesc_bgm.i: No such file or directory
+该问题是由于cmake不支持https引起的，可以查看CMakeDownloadLog.txt文件，cmake需要下载，但是失败了。
+
+解决办法：
+
+重新编译cmake，支持https，或者手动下载文件
+
+sudo apt-get install libcurl4-openssl-dev
+
+cd cmake目录 
+
+./bootstrap --system-curl
+
+make
+
+sudo make install
+
+
+
+
+
+
+
+9 librealsense2
+
+https://github.com/IntelRealSense/librealsense/blob/master/doc/distribution_linux.md
+
+
+10.IP
+> sudo gedit /etc/network/interfaces
+
+static:
+# interfaces(5) file used by ifup(8) and ifdown(8)
+auto lo
+iface lo inet loopback
+
+auto enp4s0
+iface enp4s0 inet static
+address 192.168.2.110
+
+d:
+# interfaces(5) file used by ifup(8) and ifdown(8)
+auto lo
+iface lo inet loopback
+
+#auto enp4s0
+#iface enp4s0 inet static
+#address 192.168.2.110
+
+
+>sudo /etc/init.d/networking restart 
+
+
+
