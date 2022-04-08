@@ -95,3 +95,11 @@ git push origin --delete [远端分支]
 git branch  -a //获取远端分支
 git push origin --delete dev  //删除远端分支
 ```
+
+## 打标签
+```
+git tag //列出所有标签
+git tag "tagName" //新建标签
+git tag -a tagName -m "my tag" //创建带备注的标签
+git push origin v1.0 //推送标签至远端
+```

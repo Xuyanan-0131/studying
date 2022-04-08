@@ -313,6 +313,25 @@ netstat -anp |grep 端口号
 lsof -i:端口号
 kill PID
 ```
+# 双屏显示
+```
+xrandr //查看显示器链接端口名称
+xrandr --output HDMI-0 --auto --primary     //选择其中一个显示器(我选的HDMI-0),将其设置为主屏幕(primary是设置主屏幕的意思)
+xrandr --output DP-4 --left-of HDMI-0 --auto  //将另一个显示器(DP-4)设置在主屏幕的左边.(可以改为right设置为右边)
+xrandr --output DP-4 --same-as HDMI-0 --auto  //克隆
+```
 
-# boot盘满载
-解决办法
+# 查看端口
+```
+sudo netstat -lnp | grep **
+netstat -ap //查看所有端口
+lsof -i:** //查看使用此端口的PID
+```
+
+# 安装git新版本
+```
+  sudo add-apt-repository ppa:git-core/ppa
+  sudo apt update 
+  sudo apt install git
+
+```
