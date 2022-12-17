@@ -1,46 +1,56 @@
+# Github_studing
 
-
-## Github_studing 
-```
+```bash
 git diff --staged //查看已经暂存(add)起来的变化，按下q退出对比;
 git diff          //查看暂存前后的变化
 ```
-### 提交更新
-```
+
+## 提交更新
+
+```bash
 git add    //跟踪新文件
 git commit -m “message”
 git commit -am "message"  //跳过git add步骤，自动把所有已经跟踪过的文件暂存起来一并提交
 ```
-### 添加远程仓库
-```	
+
+## 添加远程仓库
+
+```bash
 git remote add <shortname> <url> //添加远程仓库，并指定一个轻松引用的简写
 git remote -v     //显示需要读写远程仓库使用的Git保存的简写与其对应的URL
 ```
-### 推送到远程仓库
-```
+
+## 推送到远程仓库
+
+```bash
 git push [remote-name] [branch-name]
 ```
 
-### 拉取远程服务器origin的master分支并且整合代码
-```
+## 拉取远程服务器origin的master分支并且整合代码
+
+```bash
 git pull origin master //git pull相当于 git fetch 跟着一个 git merge FETCH_HEAD  ;如果发生了冲突，可以使用git reset --merge进行回退。
 ```
 
-### 创建分支
-```
+## 创建分支
+
+```bash
 git branch [branch name] //仅仅创造一个分支，不会自动切换至新分支
 ```
+
 git 有一个名为HEAD的特殊指针，指向当前所在的本地分支
 
-### 分支切换
-```
+## 分支切换
+
+```bash
 git checkout [branch name] //切换至已存在的分支
 git log --oneline --decorate --graph --all //输出提交历史、各个分支的指向以及项目的分支分叉情况
 git checkout -b [branch name] //新建一个分支并同时切换到那个分支上,是git branch 和git checkout的简写
 ```
 
-### 分支合并
-```
+## 分支合并
+
+```bash
 git checkout master         //切换至master分支
 git merge [branch name]     //将branchname的分支与master合并，其实是将master的指针移动到了branchname的指针
 git branch -d [branch name] //删除分支
@@ -49,8 +59,9 @@ git merge --abort           //若合并失败，尝试恢复到你运行合并�
 git merge -Xignore-space-change [branchname] //忽略所有空白修改 
 ```
 
-### 删除提交历史
-```
+## 删除提交历史
+
+```bash
 尝试 运行 git checkout --orphan latest_branch
 添加所有文件git add -A
 提交更改git commit -am "commit message"
@@ -58,10 +69,12 @@ git merge -Xignore-space-change [branchname] //忽略所有空白修改
 将当前分支重命名git branch -m master
 最后，强制更新存储库。git push -f origin master
 ```
-参考：https://blog.csdn.net/love_dl_forever/article/details/79380921
 
-### 指令
-```
+参考：<https://blog.csdn.net/love_dl_forever/article/details/79380921>
+
+## 指令
+
+```bash
 git diff                //查看修改过的内容
 git reset --hard HEAD^  //回退到上个版本（上个提交的commit）HEAD^^回到上上个版本，HEAD~10回退到10个版本之前
 git reflog              //查看命令历史
@@ -87,9 +100,7 @@ git checkout -b dev origin/dev      //创建远程origin的dev分支到本地
 
 git gc --prune=now                  //
 git pull origin dev2:dev2           //从远端拉取本地不存在的分支
-```
 
-```
 git rebase []  //与cherr-pick <commite>本质相同
 git push origin --delete [远端分支]
 git branch  -a //获取远端分支
@@ -97,7 +108,8 @@ git push origin --delete dev  //删除远端分支
 ```
 
 ## 打标签
-```
+
+```bash
 git tag //列出所有标签
 git tag "tagName" //新建标签
 git tag -a tagName -m "my tag" //创建带备注的标签
